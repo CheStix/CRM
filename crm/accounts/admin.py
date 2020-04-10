@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Customer, Product, Order
+from .models import Customer, Product, Order, Tag
 
 
 @admin.register(Customer)
@@ -16,3 +16,8 @@ class ProductAdmin(admin.ModelAdmin):
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
     list_display = ['date_created']
+
+
+@admin.register(Tag)
+class OrderAdmin(admin.ModelAdmin):
+    list_display = ['name']
