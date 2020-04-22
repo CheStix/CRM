@@ -4,6 +4,7 @@ from django.forms import inlineformset_factory
 
 from .models import Product, Order, Customer
 from .forms import OrderForm
+from .filters import OrderFilter
 
 
 def home(request):
@@ -36,7 +37,11 @@ def customer(request, pk):
     orders = customer.order_set.all()
     order_count = orders.count()
 
-    context = {'customer': customer, 'orders': orders, 'order_count': order_count}
+    # filter orders by get request
+    order_filter = OrderFilter(request.GET, queryset=orders)
+    orders = order_filter.qs
+
+    context = {'customer': customer, 'orders': orders, 'order_count': order_count, 'order_filter': order_filter}
     return render(request, 'accounts/customer.html', context)
 
 
