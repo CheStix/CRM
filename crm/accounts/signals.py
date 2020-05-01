@@ -1,0 +1,20 @@
+from django.db.models.signals import post_save
+from django.contrib.auth.models import User, Group
+
+from .models import Customer
+
+
+def customer_profile(sender, instance, created, **kwargs):
+    if created:
+        # installing the 'customer' group to a new user
+        group = Group.objects.get(name='customer')
+        instance.groups.add(group)
+        # create 'Customer' instance for new user
+        Customer.objects.create(
+            user=instance,
+            name=instance.username,
+            email=instance.email
+        )
+
+
+post_save.connect(customer_profile, sender=User)
